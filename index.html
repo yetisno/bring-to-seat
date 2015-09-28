@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<script type="text/javascript">
+		ntMap = [];
+		fmap = [];
+		lKeys = [];
+	</script>
+	<script type="text/javascript" src="jq.js"></script>
+	<script type="text/javascript" src="data.js"></script>
+	<link rel="stylesheet" href="bs/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="bs/css/bootstrap.min.css">
+	<script src="bs/js/bootstrap.min.js"></script>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+	<title></title>
+	<script type="text/javascript">
+		for (lKey in ntMap) {
+			lKeys[lKey.substring(0, 1)] = 'T';
+		}
+
+		for (lName in ntMap) {
+			var lNameC = lName.substring(0, 1);
+			if (fmap[lNameC] == undefined) {
+				fmap[lNameC] = [lName];
+			} else {
+				fmap[lNameC].push(lName);
+			}
+		}
+	</script>
+</head>
+<body>
+<div class="container-fluid text-center">
+	<div class="row">
+		<div class="col-xs-12 text-center h1">帶位系統</div>
+		<div id="ft" class="col-xs-12"></div>
+		<div id="nt" class="col-xs-12"></div>
+		<div id="tt" class="col-xs-12"></div>
+		<button id="rq" class="col-xs-6 col-xs-offset-3 btn btn-danger h1">重新查詢</button>
+		<div id="table" class="modal fade col-xs-12" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<img id="img_part" src="img/A.jpg" class="img-responsive center-block img-thumbnail"/>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary btn-sm" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$("#rq").click(function () {
+			$("#nt, #tt").hide();
+			$("#ft").show();
+		});
+		$("#ft").html('');
+		for (lKey in lKeys) {
+			$("#ft").append('<div class="ft col-xs-6 btn-lg btn-success" data-val="' + lKey + '">' + lKey + '</div>');
+		}
+		$("#nt, #tt").hide();
+		$("#ft").on('click', '.ft', function () {
+			var map = fmap[$(this).data('val')];
+			$("#nt").html('');
+			$("#tt").html('');
+			$("#nt").append('<div class="col-xs-12 h2">姓名</div>');
+			for (nkey in map) {
+				$("#nt").append('<div class="nt col-xs-12 btn-lg btn-warning" data-val="' + map[nkey] + '">' + map[nkey] + '</div>');
+			}
+			$("#ft, #tt").hide();
+			$("#nt").show();
+		});
+		$("#nt").on('click', '.nt', function () {
+			var key = $(this).data('val');
+			$("#tt").html('');
+			$("#tt").append('<div class="col-xs-12 h2">桌號</div>');
+			$("#tt").append('<div class="tt col-xs-12 btn-lg btn-danger" data-val="' + ntMap[key] + '"> ' + ntMap[key] + ' </div>');
+			$("#ft, #nt").hide();
+			$("#tt").show();
+		});
+		$("#tt").on('click', '.tt', function () {
+			var key = $(this).data('val');
+			$("#img_part").attr('src', 'img/' + key + '.jpg');
+			$('#table').modal('show')
+		});
+	</script>
+</div>
+</body>
+</html>
